@@ -11,8 +11,8 @@ const reactionSchema = new Schema(
       reactionBody: {
         type: String,
         required: true,
-        min: [1],
-        max: [280]
+        minlength: [1],
+        maxlength: [280]
       },
       //this is the username of the person who created the reaction
       username: {
@@ -33,7 +33,7 @@ const reactionSchema = new Schema(
 )
 
 //source code is fro mongoose documentation adding a getter method to set the date to DD/MM/YYYY
-reactionSchema.virtuals('FormatCreatedAt').get(function () {
+reactionSchema.virtual('FormatCreatedAt').get(function () {
   const date = new Date(this.createdAt);
   const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   return `time created ${formattedDate}`;
