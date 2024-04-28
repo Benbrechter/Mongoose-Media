@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
+const { connect, connection } = require('mongoose');
 
-mongoose.connect('mongod://127.0.0.1:27017/mediaDB');
+connect('mongodb://127.0.0.1:27017/mediaDB');
 
-module.exports = mongoose.connection
+module.exports = connection;
