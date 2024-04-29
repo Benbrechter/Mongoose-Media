@@ -1,7 +1,9 @@
 const {User} = require('../models');
+ 
 
 module.exports = {
 
+  //get all 
  async getUsers(req, res) {
     try{
       const users = await User.find();
@@ -10,6 +12,7 @@ module.exports = {
       res.status(500).json(err)  
     }
  },
+ //get one
  async getSingleUser(req,res) {
     try{
       const user = await User.findOne({ _id:req.params.userId })
@@ -24,6 +27,7 @@ module.exports = {
     res.status(500).json(err) 
     }
  },
+ //post a user
  async createUser(req, res) {
     try{
       const dbUserData = await User.create(req.body);
@@ -32,6 +36,7 @@ module.exports = {
       res.status(500).json(err); 
     }
  },
+ //update a user
  async updateUser(req,res) {
     try{
      const user = await User.findOneAndUpdate(
@@ -50,6 +55,7 @@ module.exports = {
       res.status(500).json(err)
     }
  },
+ //delete user
  async deleteUser(req, res) {
     try{
      const user = await User.findOneAndDelete({_id: req.params.userId});
@@ -63,3 +69,5 @@ module.exports = {
     }
  } 
 }
+
+//I am not sure if I put the routes to create friends on here
