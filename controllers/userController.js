@@ -67,7 +67,33 @@ module.exports = {
     }catch(err){
       res.status(500).json(err)
     }
- } 
+ },
+
+ async createFriend(req,res) {
+  try{
+    const user = await User.findByIdAndUpdate(req.params.userId, {$addToSet: {friends: req.params.friendId}}, {new:true})
+    if(!user){
+      res.status(404).json({message: 'User could not be found'})
+    }
+    res.status(200).json(user)
+  
+  }catch(err) {
+    res.status(500).json(err)
+  }
+ },
+  
+ async deleteFriend(req,res) {
+  try{
+    const user = await User.findByIdAndUpdate(req.params.userId, {$pull: {friends: req.params.friendId}}, {new:true})
+    if(!user){
+      res.status(404).json({message: 'User could not be found'})
+    }
+    res.status(200).json(user)
+  
+  }catch(err) {
+    res.status(500).json(err)
+  }
+ }
+
 }
 
-//I am not sure if I put the routes to create friends on here
