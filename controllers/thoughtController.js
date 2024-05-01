@@ -67,18 +67,18 @@ module.exports  = {
     }
   },
 
-  //I don't know if it isn't being ccreated because I am trying to create a model when reactions isn's a model
+  //create reaction
   async createReaction(req, res) {
     try{
         const {thoughtId} = req.params;
         const {reactionBody, username} = req.body;
-
+//since reactions is embeded in the thoughts model you have to update the thought model to add a reaction
         const updateThought = await Thought.findByIdAndUpdate(
             thoughtId,
             { $push : {reactions: {reactionBody, username} } },
             { new: true, runValidators: true }
           );
-    
+    //$push pushes the reaction into the [reaction array in the thought model]
     
           if (!updateThought) {
             return res.status(404).json({ message: 'Thought not found' });
@@ -91,16 +91,22 @@ module.exports  = {
 
   },
 
-  
+  //delet reaction
   async deleteReaction(req, res) {
     try{
-        const reaction = await Reaction.delete({_id: req.params.reactionId});
-
-    if(!reaction){
-        res.status(404).json({message: 'No reacction with this Id found'})
+        const {thoughtId, reactionId} = req.params;
+//you have to update the thought model to access the reactions schema 
+//$delets an item from an array by the Id 
+      const updateThought = await Thought.findByIdAndUpdate(
+        thoughtId,
+        { $pull: { reactions: {_id: reactionId}  } },
+        {new: true}
+      );
+    if(!updateThought){
+        res.status(404).json({message: 'No thought with this Id was found'})
     }
-        res.status(200).json(reaction) 
-
+    res.status(200).json(updateThought)
+   
     }catch (err){
         res.status(500).json(err)
     }
